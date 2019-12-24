@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>InterviewScheduleWizard</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="typeahead.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- jQuery library -->
+</head>
+
+<body>
+
+  <div class="modal bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg shadow rounded" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h5>
+            On-site interview on Friday 26-Aug-2016 at 1:00 PM
+          </h5>
+          <form></form>
+          <div class="form-row">
+
+            <div class="form-group col-md-8">
+              <label for="sel1">Interview Type</label>
+              <select class="form-control" id="sel1">
+                <option>General</option>
+                <option>Telephonic</option>
+                <option>F2F</option>
+                <option>Skype</option>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="sel1">Duration</label>
+              <select class="form-control" id="sel1">
+                <option>15 min</option>
+                <option>30 min</option>
+                <option>45 min</option>
+                <option>60 min</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group ">
+            <label for="eventtitile">Event Title</label>
+            <input type="text" class="form-control" id="eventtitile" aria-describedby="emailHelp"
+              placeholder="Add Event Title">
+
+          </div>
+
+          <div class="form-group" id="the-basics">
+            <label for="tagstype" class="col-form-label">Who</label>
+            <input type="text" id="tagstype" class="form-control" aria-describedby="emailHelp"
+              placeholder="Start typing to add more">
+          </div>
+          <div class="form-group ">
+            <label for="resourses">Resourses</label>
+            <input type="text" class="form-control" id="resourses" aria-describedby="emailHelp"
+              placeholder="Add Rooms or Conference lines">
+
+          </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success">Add</button>
+          <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <script src="js/tagsinput.js"></script>
+  <script src="js/typeahead.js"></script>
+
+  <script type="text/javascript">
+    //  var people = new Bloodhound({
+    //         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
+    //         queryTokenizer: Bloodhound.tokenizers.whitespace,
+    //         prefetch: 'assets/people.json'
+    //     });
+    //     people.initialize();
+
+    var substringMatcher = function (peopleList) {
+      return function findMatches(q, cb) {
+        var matches, substringRegex;
+
+        // an array that will be populated with substring matches
+        matches = [];
+
+        // regex used to determine if a string contains the substring `q`
+        substrRegex = new RegExp(q, 'i');
+
+        // iterate through the pool of strings and for any string that
+        // contains the substring `q`, add it to the `matches` array
+        $.each(peopleList, function (i, p) {
+          if (substrRegex.test(p.name)) {
+            matches.push(p);
+          }
+        });
+
+        cb(matches);
+      };
+    };
+    var people = [
+      {
+        "name": "James Rodgers",
+        "image": "images/james.jpg",
+        "value": "James"
+      },
+      {
+        "name": "Ivan Santos",
+        "image": "images/ivan.jpg",
+        "value": "Ivan"
+      },
+      {
+        "name": "Mike Albert",
+        "image": "images/mike.jpg",
+        "value": "Mike"
+      }
+    ]
+
+    $('#tagstype').tagsinput({
+      itemValue: 'value',
+      itemText: function (item) {
+        return '<img src="' + item.image + '" class="profile-image">' + item.name
+      },
+      tagClass: function () {
+        return 'custom-tag'
+      },
+      typeaheadjs: ({
+        hint: true,
+        highlight: true,
+        minLength: 1
+      }, {
+          name: 'people',
+          displayKey: 'name',
+          source: substringMatcher(people),
+        }
+      )
+
+    });
+
+  </script>
+</body>
+
+</html>
